@@ -1,48 +1,66 @@
-# Variables
-NAME        = test
+# Project Name
+NAME        = fractol
+
+# Compiler and Flags
 CC          = cc
 CFLAGS      = -Wall -Wextra -Werror -g
-INCLUDES    = -I includes -I libft/includes
-LIBFT       = libft/libft.a
+
+# MinilibX Configuration
+MINILIBX_DIR = inc/minilibx-linux
+MINILIBX    = -L$(MINILIBX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
+MLX_INCLUDE = -L$(MINILIBX_DIR)
+
+# Include Paths
+INCLUDES    = -Iinc -Iinc/libft -I$(MINILIBX_DIR)
+
+# Library Paths
+LIBFT       = inc/libft/libft.a
+
+# Source and Object Directories
 SRC_DIR     = src
 OBJ_DIR     = obj
-SRCS        = $(SRC_DIR)/check_input.c\
-			$(SRC_DIR)/main.c \
-            $(SRC_DIR)/push.c \
-            $(SRC_DIR)/radix_sort.c \
-            $(SRC_DIR)/reverse_rotate.c \
-            $(SRC_DIR)/rotate.c \
-            $(SRC_DIR)/small_sort.c \
-			$(SRC_DIR)/sort_utils.c \
-            $(SRC_DIR)/stack_building.c \
-			$(SRC_DIR)/stack_utils.c \
-            $(SRC_DIR)/swap.c
 
-%.o: %.c
-	$(CC) -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3 -c $< -o $@
+# Source Files
+SRCS        = $(SRC_DIR)/main.c \
+              $(SRC_DIR)/fractol.c \
+              $(SRC_DIR)/render.c \
+              $(SRC_DIR)/color.c \
+              $(SRC_DIR)/utils.c
 
-$(NAME): $(OBJ)
-	$(CC) $(OBJ) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
+# Object Files
+OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
+# Default Target
 all: $(NAME)
 
-$(LIBFT):
-	@make -C libft
+# Rule to build the final executable
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MINILIBX) -o $(NAME)
 
+# Rule to compile source files into object files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(INCLUDES) $(MLX_INCLUDE) -c $< -o $@
+
+# Rule to create the object directory
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+# Rule to build the libft library
+$(LIBFT):
+	@make -C inc/libft
 
+# Clean up object files
 clean:
 	rm -rf $(OBJ_DIR)
-	@make -C libft clean
+	@make -C inc/libft clean
 
+# Clean up everything (objects and executable)
 fclean: clean
 	rm -f $(NAME)
-	@make -C libft fclean
+	@make -C inc/libft fclean
 
+# Rebuild the project
 re: fclean all
 
+# Phony targets to avoid conflicts with files of the same name
 .PHONY: all clean fclean re
