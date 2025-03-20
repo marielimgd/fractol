@@ -6,11 +6,11 @@
 /*   By: marieli <marieli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:02:47 by marielidias       #+#    #+#             */
-/*   Updated: 2025/03/19 18:48:45 by marieli          ###   ########.fr       */
+/*   Updated: 2025/03/20 17:54:51 by marieli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
 int	ft_strncmp(const char *str1, const char *str2, size_t n)
 {

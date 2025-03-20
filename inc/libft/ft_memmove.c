@@ -6,11 +6,11 @@
 /*   By: marieli <marieli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 10:08:02 by marielidias       #+#    #+#             */
-/*   Updated: 2025/03/19 18:47:25 by marieli          ###   ########.fr       */
+/*   Updated: 2025/03/20 17:54:51 by marieli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
 void	*ft_memmove(void *dest, const void *src, size_t len)
 {

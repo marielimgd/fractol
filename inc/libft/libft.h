@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmariano <mmariano@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: marieli <marieli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 10:03:13 by marielidias       #+#    #+#             */
-/*   Updated: 2025/03/07 17:24:33 by mmariano         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:44:56 by marieli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,6 @@ long				ft_atol(const char *nptr);
 int					ft_putptr(unsigned long ptr);
 int					ft_putchar(char c);
 int					ft_putstr(char *str);
+double  			ft_atodbl(char *str);
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: marieli <marieli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:28:25 by mmariano          #+#    #+#             */
-/*   Updated: 2025/03/19 18:47:25 by marieli          ###   ########.fr       */
+/*   Updated: 2025/03/20 17:54:33 by marieli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
 static char	*read_and_store(int fd, char *buffer)
 {

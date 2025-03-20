@@ -23,3 +23,4 @@ t_complex   square_complex(t_complex z)
     result.y = 2 * z.x * z.y;
     return (result);
 }
+

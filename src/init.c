@@ -10,6 +10,19 @@ void    data_init(t_fractal *fractal)
 {
     fractal->escape_value = 4; //2²
     fractal->iterations_def = 42; 
+    fractal->shift_x = 0;
+    fractal->shift_y = 0;
+    fractal->zoom = 1.0;
+
+}
+
+static void events_init(t_fractal *fractal)
+{
+    mlx_hook(fractal->mlx_window, KeyPress, KeyPressMask, key_handler, fractal);
+    mlx_hook(fractal->mlx_window, ButtonPress, ButtonPressMask, mouse_handler, fractal);
+    mlx_hook(fractal->mlx_window, DestroyNotify, StructureNotifyMask, close_handler, fractal); //fecha a janela quando aperta o x
+    mlx_hook(fractal->mlx_window, MotionNotify, PointerMotionMask, julia_track, fractal); //fecha a janela quando aperta o x
+
 }
 
 void fractal_init(t_fractal *fractal)
@@ -42,7 +55,7 @@ void fractal_init(t_fractal *fractal)
 
 
     //iniciando o evento
-    //events_init(fractal)// a funçao mlx_hook deixa a janela aberta e aguarda pelos comandos
+    events_init(fractal);// a funçao mlx_hook deixa a janela aberta e aguarda pelos comandos
     data_init(fractal); //zoom, shift
 
 }

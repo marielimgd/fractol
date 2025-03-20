@@ -6,11 +6,11 @@
 /*   By: marieli <marieli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 10:01:29 by marielidias       #+#    #+#             */
-/*   Updated: 2025/03/19 18:47:25 by marieli          ###   ########.fr       */
+/*   Updated: 2025/03/20 17:54:51 by marieli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
 int	ft_isdigit(int c)
 {

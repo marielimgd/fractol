@@ -6,7 +6,7 @@
 /*   By: marieli <marieli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:13:31 by marieli           #+#    #+#             */
-/*   Updated: 2025/03/20 15:05:13 by marieli          ###   ########.fr       */
+/*   Updated: 2025/03/20 18:12:40 by marieli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 
 # include "minilibx-linux/mlx.h"
-# include "libft.h" //my functions
+# include <X11/X.h>
+# include <X11/keysym.h> 
+# include "libft/libft.h" //my functions
 # include <stdio.h> //debug
 # include <stdlib.h> //malloc, free
 # include <unistd.h> //write
@@ -66,12 +68,17 @@ typedef struct s_img //dados para o mlx_get_data_addr
 //---------Carcteristicas do fractal----------
 typedef struct s_fractal //fractal ID
 {
-	char	*name;
-    void    *mlx_connection; //mlx_init()
-    void    *mlx_window; //mlx_new_window
-    t_img    img;
-	double	escape_value; //hipotenusa
-	int		iterations_def; //value tight with the image quality and rendering speed
+	char	    *name;
+    void        *mlx_connection; //mlx_init()
+    void        *mlx_window; //mlx_new_window
+    t_img       img;
+	double	    escape_value; //hipotenusa
+	int		    iterations_def; //value tight with the image quality and rendering speed
+    double      shift_x;
+    double      shift_y;
+    double      zoom;
+    double      julia_x;
+    double      julia_y;
 }				t_fractal;
 
 
@@ -82,21 +89,23 @@ typedef struct s_complex
 	double	y; //imaginary number i
 }				t_complex;
 
-
-
 //------------funções----------------------------
 //init:
-void    data_init(t_fractal *fractal);
-void 	fractal_init(t_fractal *fractal);
+void        data_init(t_fractal *fractal);
+void 	    fractal_init(t_fractal *fractal);
 
 //render:
-void    fractal_render(t_fractal    *fractal);
+void        fractal_render(t_fractal    *fractal);
 
 //math:
 double 		map(double   unscaled_num, double new_min, double new_max, double old_min, double old_max);
 t_complex   sum_complex(t_complex z1, t_complex z2);
 t_complex   square_complex(t_complex z);
 
-
+//events:
+int         key_handler(int keysym, t_fractal *fractal);
+int         close_handler(t_fractal *fractal);
+int         mouse_handler(int button, int x, int y, t_fractal *fractal);
+int         julia_track(int x, int y, t_fractal *fractal);
 
 #endif

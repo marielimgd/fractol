@@ -6,7 +6,7 @@
 #    By: marieli <marieli@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/29 18:39:36 by marielidias       #+#    #+#              #
-#    Updated: 2025/02/03 19:29:46 by marieli          ###   ########.fr        #
+#    Updated: 2025/03/20 18:03:43 by marieli          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRCS	= ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 			ft_lstnew.c ft_lstadd_front.c ft_lstsize.c \
 			ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c \
 			ft_lstclear.c ft_lstiter.c ft_lstmap.c ft_lst_remove_node.c \
-			ft_putstr.c ft_putptr.c get_next_line.c ft_printf.c 
+			ft_putstr.c ft_putptr.c get_next_line.c ft_printf.c ft_atodbl.c
 			
 OBJS = $(SRCS:.c=.o)
 

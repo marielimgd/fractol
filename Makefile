@@ -24,7 +24,8 @@ OBJ_DIR     = obj
 SRCS        = $(SRC_DIR)/main.c \
               $(SRC_DIR)/render.c \
               $(SRC_DIR)/math_utils.c \
-			  $(SRC_DIR)/init.c
+			  $(SRC_DIR)/init.c \
+			  $(SRC_DIR)/events.c
 
 # Object Files
 OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
