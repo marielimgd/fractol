@@ -22,10 +22,9 @@ OBJ_DIR     = obj
 
 # Source Files
 SRCS        = $(SRC_DIR)/main.c \
-              $(SRC_DIR)/fractol.c \
               $(SRC_DIR)/render.c \
-              $(SRC_DIR)/color.c \
-              $(SRC_DIR)/utils.c
+              $(SRC_DIR)/math_utils.c \
+			  $(SRC_DIR)/init.c
 
 # Object Files
 OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
