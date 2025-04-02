@@ -1,6 +1,6 @@
 #include "../inc/fractol.h"
 
-static void	my_pixel_put(int x, int y, t_img *img, int color)
+static void	ft_put_pixel(int x, int y, t_img *img, int color)
 {	
 	int offset;
 
@@ -14,16 +14,16 @@ static void	my_pixel_put(int x, int y, t_img *img, int color)
 // 	c is the actual point
 
 // Julia:
-// ./fractol julia <real> <i>
+// ./fractal julia <real> <i>
 // z = pixel_point + constant
 // constant = <real> <i>
 
-static	void mandel_vs_julia(t_complex *z, t_complex *c, t_fractol *fractol)
+static	void mandel_vs_julia(t_complex *z, t_complex *c, t_fractal *fractal)
 {
-	if (!ft_strncmp(fractol->name, "julia", 5))
+	if (!ft_strncmp(fractal->name, "julia", 5))
 	{
-		c->x = fractol->julia_x;
-		c->y = fractol->julia_y;
+		c->x = fractal->julia_x;
+		c->y = fractal->julia_y;
 	}
 	else
 	{
@@ -32,35 +32,44 @@ static	void mandel_vs_julia(t_complex *z, t_complex *c, t_fractol *fractol)
 	}
 }
 
-static void	handle_pixel(int x, int y, t_fractol *fractol)
+static t_complex calculate_initial_z(int x, int y, t_fractal *fractal)
 {
-	int			i;
-	int			color;
-	t_complex	z;
-	t_complex	c;
+    t_complex z;
+    double real_min = fractal->shift_x - (2.0 / fractal->zoom);
+    double real_max = fractal->shift_x + (2.0 / fractal->zoom);
+    double imag_min = fractal->shift_y - (2.0 / fractal->zoom);
+    double imag_max = fractal->shift_y + (2.0 / fractal->zoom);
 
-	i = 0;
-	z.x = (map(x, -2, +2, 0, WIDTH) * fractol->zoom) + fractol->shift_x;
-	z.y = (map(y, +2, -2, 0, HEIGHT) * fractol->zoom) + fractol->shift_y;
-
-	mandel_vs_julia(&z, &c, fractol);
-
-	while (i < fractol->iterations_def)//how many timex the mandelbrot function will be iterated until the point scape
-	{
-		z = sum_complex(square_complex(z), c);
-		if ((z.x * z.x) + (z.y * z.y) > fractol->escape_value)//the point has escaped
-		{
-			color = map(i, BLACK, WHITE, 0, fractol->iterations_def);
-			my_pixel_put(x, y, &fractol->img, color);
-			return;
-		}
-		++i;
-	}
-	//we are in mandelbroth, given the iterations made
-	my_pixel_put(x, y, &fractol->img, WHITE);
+    z.x = real_min + ((real_max - real_min) * x / WIDTH);
+    z.y = imag_min + ((imag_max - imag_min) * y / HEIGHT);
+    return z;
 }
 
-void    fractol_render(t_fractol    *fractol)
+static void handle_pixel(int x, int y, t_fractal *fractal)
+{
+    int i = 0;
+    int color;
+    t_complex z, c;
+    const int *palette;
+    
+    palette = get_palette();
+    z = calculate_initial_z(x, y, fractal);
+    mandel_vs_julia(&z, &c, fractal);
+    while (i < fractal->iterations_def)
+    {
+        z = sum_complex(square_complex(z), c);
+        if ((z.x * z.x) + (z.y * z.y) > fractal->escape_value)
+        {
+            color = palette[i % 21];
+            ft_put_pixel(x, y, &fractal->img, color);
+            return;
+        }
+        ++i;
+    }
+    ft_put_pixel(x, y, &fractal->img, PLASMA_ROXO);
+}
+
+void    fractal_render(t_fractal    *fractal)
 {
     int	x;
 	int	y;
@@ -71,8 +80,8 @@ void    fractol_render(t_fractol    *fractol)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			handle_pixel(x, y, fractol);
+			handle_pixel(x, y, fractal);
 		}
 	}
-	mlx_put_image_to_window(fractol->mlx_connection, fractol->mlx_window, fractol->img.img_ptr, 0, 0);
+	mlx_put_image_to_window(fractal->mlx_connection, fractal->mlx_window, fractal->img.img_ptr, 0, 0);
 }

@@ -1,63 +1,57 @@
 #include "../inc/fractol.h"
 
-int    close_handler(t_fractol *fractol)
+int    close_handler(t_fractal *fractal)
 {
-    mlx_destroy_image(fractol->mlx_connection, fractol->img.img_ptr);
-    mlx_destroy_window(fractol->mlx_connection, fractol->mlx_window);
-    mlx_destroy_display(fractol->mlx_connection);
-    free(fractol->mlx_connection);
+    mlx_destroy_image(fractal->mlx_connection, fractal->img.img_ptr);
+    mlx_destroy_window(fractal->mlx_connection, fractal->mlx_window);
+    mlx_destroy_display(fractal->mlx_connection);
+    free(fractal->mlx_connection);
     exit(EXIT_SUCCESS);
 }
 
-int key_handler(int keysym, t_fractol *fractol)
+int key_handler(int keysym, t_fractal *fractal)
 {
     if (keysym == XK_Escape)
-        close_handler(fractol);
+    {
+        close_handler(fractal);
+        ft_printf("Tecla pressionada: %d\n", keysym);
+    }
     else if (keysym == XK_Left)
-        fractol->shift_x += (0.5 * fractol->zoom);
+        fractal->shift_x += (0.5 * fractal->zoom);
     else if (keysym == XK_Right)
-        fractol->shift_x -= (0.5 * fractol->zoom);
+        fractal->shift_x -= (0.5 * fractal->zoom);
     else if (keysym == XK_Up)
-        fractol->shift_y += 0.5;
+        fractal->shift_y += 0.5;
     else if (keysym == XK_Down)
-        fractol->shift_y -= 0.5;
+        fractal->shift_y -= 0.5;
     else if (keysym == XK_plus || keysym == XK_equal)
-        fractol->iterations_def += 10;
+        fractal->iterations_def = 20 + (int)(10 / fractal->zoom);
     else if (keysym == XK_minus)
-        fractol->iterations_def -= 10;
-    else if (keysym == XK_z) // zoom in
-        fractol->zoom *= 0.95;
-    else if (keysym == XK_x) // zoom out
-        fractol->zoom *= 1.05;
-    
-    fractol_render(fractol); //refresh the image
+        fractal->iterations_def = 20 + (int)(10 / fractal->zoom);    
+    fractal_render(fractal);
     return(0);
 }
-
-// int mouse_handler(int button, int x, int y, t_fractol *fractol)
-// {
-//     (void)x;
-//     (void)y;
-
-//     if (button == Button5) //zoom in
-//     {
-//         fractol->zoom *= 0.95;
-//     }
-//     else if (button == Button4) //zoom out
-//     {
-//         fractol->zoom *= 1.05;
-//     }
-//     fractol_render(fractol); //refresh the image
-//     return(0);
-// }
-
-int julia_track(int x, int y, t_fractol *fractol)
+//used in julia
+int	mouse_handler(int button, int x, int y, t_fractal *fractal)
 {
-    if (!ft_strncmp(fractol->name, "julia", 5))
+    (void)x;
+    (void)y;
+    
+	if (button == Button5)
+		fractal->zoom *= 0.95;
+	else if (button == Button4)
+		fractal->zoom *= 1.05;
+	fractal_render(fractal);
+	return 0;
+}
+
+int julia_track(int x, int y, t_fractal *fractal)
+{
+    if (!ft_strncmp(fractal->name, "julia", 5))
     {
-        fractol->julia_x = (map(x, -2, +2, 0, WIDTH) * fractol->zoom )+ fractol->shift_x;
-        fractol->julia_y = (map(y, +2, -2, 0, HEIGHT) * fractol->zoom )+ fractol->shift_y;
+        fractal->julia_x = (map(x, -2, +2, 0, WIDTH) * fractal->zoom )+ fractal->shift_x;
+        fractal->julia_y = (map(y, +2, -2, 0, HEIGHT) * fractal->zoom )+ fractal->shift_y;
     }
-    fractol_render(fractol);
+    fractal_render(fractal);
     return(0);
 }

@@ -23,7 +23,7 @@ OBJ_DIR     = obj
 # Source Files
 SRCS        = $(SRC_DIR)/main.c \
               $(SRC_DIR)/render.c \
-              $(SRC_DIR)/math_utils.c \
+              $(SRC_DIR)/utils.c \
 			  $(SRC_DIR)/init.c \
 			  $(SRC_DIR)/events.c
 

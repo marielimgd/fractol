@@ -6,12 +6,12 @@
 /*   By: marieli <marieli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:13:31 by marieli           #+#    #+#             */
-/*   Updated: 2025/04/02 15:58:28 by marieli          ###   ########.fr       */
+/*   Updated: 2025/04/02 18:39:00 by marieli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#ifndef fractal_H
+# define fractal_H
 
 
 # include "minilibx-linux/mlx.h"
@@ -28,30 +28,42 @@
 
 //-----------Colors-----------
 
-#define BLACK               0x000000  // Black
-#define WHITE               0xFFFFFF  // White
-#define NEON_PINK           0xFF00FF  // Neon pink
-#define ELECTRIC_BLUE       0x00FFFF  // Electric blue
-#define LIME_GREEN          0x00FF00  // Lime green
-#define SUNSET_ORANGE       0xFF4500  // Sunset orange
-#define PURPLE_HAZE         0x800080  // Purple haze
-#define ELECTRIC_PURPLE     0xBF00FF  // Electric purple
-#define CYAN                0x00FFFF  // Cyan
-#define MAGENTA             0xFF00FF  // Magenta
-#define YELLOW              0xFFFF00  // Yellow
-#define HOT_PINK            0xFF69B4  // Hot pink
-#define NEON_GREEN          0x39FF14  // Neon green
-#define ORANGE              0xFFA500  // Orange
-#define DEEP_PURPLE         0x4B0082  // Deep purple
-#define AQUA                0x00FFFF  // Aqua
-#define GOLD                0xFFD700  // Gold
+#define BLACK            0x000000  // Black
+#define CORAL_POP        0xF4785E  // Coral vibrante, inspirado na moda Mod
+#define SOL_PSICODELICO  0xF3A35C  // Amarelo intenso, característico do Flower Power
+#define RAIO_LIBERDADE   0xF7D47A  // Amarelo pastel suave, usado em cartazes vintage
+#define VERDE_HARMONY    0xB1CC9F  // Verde ligado à natureza e ao movimento hippie
+#define AGUA_VIVA        0xA5DAD2  // Verde-água futurista, comum em decorações
+#define DENIM_RETRO      0x8EB2C5  // Azul jeans clássico, rebelde e icônico
+#define MAGENTA_VIBRANTE 0xD13092  // Magenta saturado, essencial para arte psicodélica
+#define ROXO_VORTEX      0x7731D1  // Roxo profundo e hipnotizante, típico da estética dos anos 60
+#define LARANJA_TRIP     0xE06633  // Laranja vibrante, remanescente de pôsteres psicodélicos
+#define VERDE_LIMA       0xA4E200  // Verde ácido, usado para contrastes psicodélicos
+#define TURQUESA_FLUX    0x32D4CB  // Azul esverdeado, presente em designs retro-futuristas
+#define ROSA_ELETRICO    0xFF33CC  // Rosa neon, chamativo e excêntrico
+#define CELESTE_HIPPIE   0x3DAAF2  // Azul celeste saturado, remete ao espírito livre dos anos 60
+#define AMARELO_ACIDO    0xFFE600  // Amarelo neon forte, contrastante e intenso
+#define VERMELHO_VIBES   0xFF2200  // Vermelho quente e saturado, usado em pôsteres da época
+#define ABISMO_AZUL      0x00008B  // Azul escuro e misterioso, representando o fundo do Mandelbrot
+#define MAGENTA_ELETRICO 0xD9008D  // Magenta vibrante, semelhante às bordas do fractal
+#define VIOLETA_NEBULOSO 0x8B00FF  // Roxo forte, típico da estética psicodélica
+#define COSMIC_INDIGO    0x4B0082  // Índigo profundo, dando contraste ao azul
+#define ROSA_EXPLOSIVO   0xFF1493  // Rosa intenso, criando um efeito de neon surreal
+#define LARANJA_HIPNOTICO 0xE06633 // Laranja vibrante, como visto na transição do fractal
+#define VERDE_FLUORESCENTE 0x39FF14 // Verde fluorescente que dá um toque ácido ao fractal
+#define PINK_PULSAR      0xFC0FC0  // Pink pulsante, refletindo energia psicodélica
+#define AZUL_LUMINOSO    0x1E90FF  // Azul brilhante, trazendo profundidade ao Mandelbrot
+#define DOURADO_ESPIRAL  0xFFD700  // Ouro intenso, ideal para realce nos detalhes fractais
+#define PLASMA_ROXO      0x6A0DAD  // Roxo plasma, perfeito para efeitos hipnóticos
+#define WHITE            0xFFFFFF  // White
+
 
 //---------malloc error----------
 #define ERROR_MESSAGE \
     "Usage: \n" \
-    "\"./fractol mandelbrot\" - Renders the Mandelbrot set.\n" \
-    "\"./fractol julia <value 1> <value 2>\" - Renders the Julia set with the given complex numbers.\n" \
-    "Example: \"./fractol julia -0.8 0.156\"\n"
+    "\"./fractal mandelbrot\" - Renders the Mandelbrot set.\n" \
+    "\"./fractal julia <value 1> <value 2>\" - Renders the Julia set with the given complex numbers.\n" \
+    "Example: \"./fractal julia -0.8 0.156\"\n"
 
 	
 //---------Caracteristicas da imagem--------
@@ -60,13 +72,13 @@ typedef struct s_img //dados para o mlx_get_data_addr
     void    *img_ptr; //pointer to image struct
     void    *pixels_ptr; //points to the actual pixels
     int     bpp; //bits per pixel
-    int     endian; //order to use the pixels, not used here
+    int     endian; //not used, but some functions require
     int     line_len;
 }              t_img;
 
 
-//---------Carcteristicas do fractol----------
-typedef struct s_fractol //fractol ID
+//---------Carcteristicas do fractal----------
+typedef struct s_fractal //fractal ID
 {
 	char	    *name;
     void        *mlx_connection; //mlx_init()
@@ -79,23 +91,29 @@ typedef struct s_fractol //fractol ID
     double      zoom;
     double      julia_x;
     double      julia_y;
-}				t_fractol;
+}				t_fractal;
 
 
 //---------Para fazer os calculos com numeros complexos----------
+
 typedef struct s_complex
 {
     double	x; //real number
 	double	y; //imaginary number i
 }				t_complex;
 
+// #define SQUARE_COMPLEX(z) (t_complex){(z.x * z.x) - (z.y * z.y), (2 * z.x * z.y)}
+// #define SUM_COMPLEX(z1, z2) (t_complex){(z1.x + z2.x), (z1.y + z2.y)}
+
+
 //------------funções----------------------------
 //init:
-void        data_init(t_fractol *fractol);
-void 	    fractol_init(t_fractol *fractol);
+void        data_init(t_fractal *fractal);
+void 	    fractal_init(t_fractal *fractal);
 
 //render:
-void        fractol_render(t_fractol    *fractol);
+// const int   *get_palette(void);
+void        fractal_render(t_fractal    *fractal);
 
 //math:
 double 		map(double   unscaled_num, double new_min, double new_max, double old_min, double old_max);
@@ -103,9 +121,9 @@ t_complex   sum_complex(t_complex z1, t_complex z2);
 t_complex   square_complex(t_complex z);
 
 //events:
-int         key_handler(int keysym, t_fractol *fractol);
-int         close_handler(t_fractol *fractol);
-//int         mouse_handler(int button, int x, int y, t_fractol *fractol);
-int         julia_track(int x, int y, t_fractol *fractol);
+int         key_handler(int keysym, t_fractal *fractal);
+int         close_handler(t_fractal *fractal);
+int         mouse_handler(int button, int x, int y, t_fractal *fractal);
+int         julia_track(int x, int y, t_fractal *fractal);
 
 #endif
