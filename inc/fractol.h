@@ -6,7 +6,7 @@
 /*   By: marieli <marieli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:13:31 by marieli           #+#    #+#             */
-/*   Updated: 2025/03/20 18:12:40 by marieli          ###   ########.fr       */
+/*   Updated: 2025/04/02 15:58:28 by marieli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ typedef struct s_img //dados para o mlx_get_data_addr
 }              t_img;
 
 
-//---------Carcteristicas do fractal----------
-typedef struct s_fractal //fractal ID
+//---------Carcteristicas do fractol----------
+typedef struct s_fractol //fractol ID
 {
 	char	    *name;
     void        *mlx_connection; //mlx_init()
@@ -79,7 +79,7 @@ typedef struct s_fractal //fractal ID
     double      zoom;
     double      julia_x;
     double      julia_y;
-}				t_fractal;
+}				t_fractol;
 
 
 //---------Para fazer os calculos com numeros complexos----------
@@ -91,11 +91,11 @@ typedef struct s_complex
 
 //------------funções----------------------------
 //init:
-void        data_init(t_fractal *fractal);
-void 	    fractal_init(t_fractal *fractal);
+void        data_init(t_fractol *fractol);
+void 	    fractol_init(t_fractol *fractol);
 
 //render:
-void        fractal_render(t_fractal    *fractal);
+void        fractol_render(t_fractol    *fractol);
 
 //math:
 double 		map(double   unscaled_num, double new_min, double new_max, double old_min, double old_max);
@@ -103,9 +103,9 @@ t_complex   sum_complex(t_complex z1, t_complex z2);
 t_complex   square_complex(t_complex z);
 
 //events:
-int         key_handler(int keysym, t_fractal *fractal);
-int         close_handler(t_fractal *fractal);
-int         mouse_handler(int button, int x, int y, t_fractal *fractal);
-int         julia_track(int x, int y, t_fractal *fractal);
+int         key_handler(int keysym, t_fractol *fractol);
+int         close_handler(t_fractol *fractol);
+//int         mouse_handler(int button, int x, int y, t_fractol *fractol);
+int         julia_track(int x, int y, t_fractol *fractol);
 
 #endif

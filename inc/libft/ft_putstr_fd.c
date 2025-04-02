@@ -6,7 +6,7 @@
 /*   By: marieli <marieli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 12:19:45 by marielidias       #+#    #+#             */
-/*   Updated: 2025/03/20 17:54:51 by marieli          ###   ########.fr       */
+/*   Updated: 2025/04/02 16:30:37 by marieli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	if (!s || fd < 0) //se der ruim, tirar a checagem de fd
+	if (!s || fd < 0) 
 		return ;
-	write(fd, s, ft_strlen(s));
+	if (*s != '\0')
+	{
+		write(fd, s, 1);
+		ft_putstr_fd(s + 1, fd);
+	}
 }
