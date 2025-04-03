@@ -1,87 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmariano <mmariano@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/03 16:23:26 by mmariano          #+#    #+#             */
+/*   Updated: 2025/04/03 17:39:34 by mmariano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/fractol.h"
 
-static void	ft_put_pixel(int x, int y, t_img *img, int color)
-{	
-	int offset;
+void    draw_pixel_color(t_fractal  *fractal, int x, int y, int color)
+{
+    int *buffer;
 
-	offset = (y * img->line_len) + (x * (img->bpp / 8));
-	*(unsigned int *)(img->pixels_ptr + offset) = color;
+    buffer = fractal->pointer_to_image;
+    /* Cada pixel ocupa 4 bytes; usei /4 para converter em índice de int */
+    buffer[(y * fractal->size_line / 4) + x] = color;
 }
 
-// Mandelbrot: 
-//	z = z² + c
-// 	z initially is (0,0)
-// 	c is the actual point
-
-// Julia:
-// ./fractal julia <real> <i>
-// z = pixel_point + constant
-// constant = <real> <i>
-
-static	void mandel_vs_julia(t_complex *z, t_complex *c, t_fractal *fractal)
+int draw_fractal(t_fractal *fractal, char *query)
 {
-	if (!ft_strncmp(fractal->name, "julia", 5))
-	{
-		c->x = fractal->julia_x;
-		c->y = fractal->julia_y;
-	}
-	else
-	{
-		c->x = z->x;
-		c->y = z->y;
-	}
-}
-
-static t_complex calculate_initial_z(int x, int y, t_fractal *fractal)
-{
-    t_complex z;
-    double real_min = fractal->shift_x - (2.0 / fractal->zoom);
-    double real_max = fractal->shift_x + (2.0 / fractal->zoom);
-    double imag_min = fractal->shift_y - (2.0 / fractal->zoom);
-    double imag_max = fractal->shift_y + (2.0 / fractal->zoom);
-
-    z.x = real_min + ((real_max - real_min) * x / WIDTH);
-    z.y = imag_min + ((imag_max - imag_min) * y / HEIGHT);
-    return z;
-}
-
-static void handle_pixel(int x, int y, t_fractal *fractal)
-{
-    int i = 0;
-    int color;
-    t_complex z, c;
-    const int *palette;
-    
-    palette = get_palette();
-    z = calculate_initial_z(x, y, fractal);
-    mandel_vs_julia(&z, &c, fractal);
-    while (i < fractal->iterations_def)
+    if (ft_strncmp(query, "mandel", 7) == 0)
+        draw_mandelbrot(fractal);
+    else if (ft_strncmp(query, "julia", 6) == 0)
     {
-        z = sum_complex(square_complex(z), c);
-        if ((z.x * z.x) + (z.y * z.y) > fractal->escape_value)
+        if (!fractal->cx && !fractal->cy)
         {
-            color = palette[i % 21];
-            ft_put_pixel(x, y, &fractal->img, color);
-            return;
+            fractal->cx = -0.745429;
+            fractal->cy =  0.05;
         }
-        ++i;
+        draw_julia(fractal);
     }
-    ft_put_pixel(x, y, &fractal->img, PLASMA_ROXO);
-}
-
-void    fractal_render(t_fractal    *fractal)
-{
-    int	x;
-	int	y;
-
-	y = -1;
-	while (++y < HEIGHT)
-	{
-		x = -1;
-		while (++x < WIDTH)
-		{
-			handle_pixel(x, y, fractal);
-		}
-	}
-	mlx_put_image_to_window(fractal->mlx_connection, fractal->mlx_window, fractal->img.img_ptr, 0, 0);
+    else
+    {
+        ft_putendl_fd("Available fractals: mandel, julia", 1);
+        exit_fractal(fractal);
+    }
+    mlx_put_image_to_window(fractal->mlx, fractal->window, fractal->image, 0, 0);
+    return (0);
 }
