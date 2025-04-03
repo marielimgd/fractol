@@ -8,7 +8,6 @@ CFLAGS      = -Wall -Wextra -Werror -g
 # MinilibX Configuration
 MINILIBX_DIR = inc/minilibx-linux
 MINILIBX    = -L$(MINILIBX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
-MLX_INCLUDE = -L$(MINILIBX_DIR)
 
 # Include Paths
 INCLUDES    = -Iinc -Iinc/libft -I$(MINILIBX_DIR)
@@ -23,7 +22,7 @@ OBJ_DIR     = obj
 # Source Files
 SRCS        = $(SRC_DIR)/main.c \
               $(SRC_DIR)/render.c \
-              $(SRC_DIR)/math_utils.c \
+              $(SRC_DIR)/math.c \
 			  $(SRC_DIR)/init.c \
 			  $(SRC_DIR)/events.c
 
