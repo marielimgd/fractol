@@ -1,78 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmariano <mmariano@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/03 16:23:26 by mmariano          #+#    #+#             */
+/*   Updated: 2025/04/03 18:01:47 by mmariano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/fractol.h"
 
-static void	my_pixel_put(int x, int y, t_img *img, int color)
-{	
-	int offset;
+void	draw_pixel_color(t_fractal *fractal, int x, int y, int color)
+{
+	int	*buffer;
 
-	offset = (y * img->line_len) + (x * (img->bpp / 8));
-	*(unsigned int *)(img->pixels_ptr + offset) = color;
+	buffer = fractal->pointer_to_image;
+	buffer[(y * fractal->size_line / 4) + x] = color;
 }
 
-// Mandelbrot: 
-//	z = z² + c
-// 	z initially is (0,0)
-// 	c is the actual point
-
-// Julia:
-// ./fractol julia <real> <i>
-// z = pixel_point + constant
-// constant = <real> <i>
-
-static	void mandel_vs_julia(t_complex *z, t_complex *c, t_fractal *fractal)
+int	draw_fractal(t_fractal *fractal, char *query)
 {
-	if (!ft_strncmp(fractal->name, "julia", 5))
+	if (ft_strncmp(query, "mandelbrot", 10) == 0)
+		draw_mandelbrot(fractal);
+	else if (ft_strncmp(query, "julia", 6) == 0)
 	{
-		c->x = fractal->julia_x;
-		c->y = fractal->julia_y;
+		if (!fractal->cx && !fractal->cy)
+		{
+			fractal->cx = -0.745429;
+			fractal->cy = 0.05;
+		}
+		draw_julia(fractal);
 	}
 	else
 	{
-		c->x = z->x;
-		c->y = z->y;
+		ft_putendl_fd("Available fractals: mandel, julia", 1);
+		exit_fractal(fractal);
 	}
-}
-
-static void	handle_pixel(int x, int y, t_fractal *fractal)
-{
-	int			i;
-	int			color;
-	t_complex	z;
-	t_complex	c;
-
-	i = 0;
-	z.x = (map(x, -2, +2, 0, WIDTH) * fractal->zoom) + fractal->shift_x;
-	z.y = (map(y, +2, -2, 0, HEIGHT) * fractal->zoom) + fractal->shift_y;
-
-	mandel_vs_julia(&z, &c, fractal);
-
-	while (i < fractal->iterations_def)//how many timex the mandelbrot function will be iterated until the point scape
-	{
-		z = sum_complex(square_complex(z), c);
-		if ((z.x * z.x) + (z.y * z.y) > fractal->escape_value)//the point has escaped
-		{
-			color = map(i, BLACK, WHITE, 0, fractal->iterations_def);
-			my_pixel_put(x, y, &fractal->img, color);
-			return;
-		}
-		++i;
-	}
-	//we are in mandelbroth, given the iterations made
-	my_pixel_put(x, y, &fractal->img, WHITE);
-}
-
-void    fractal_render(t_fractal    *fractal)
-{
-    int	x;
-	int	y;
-
-	y = -1;
-	while (++y < HEIGHT)
-	{
-		x = -1;
-		while (++x < WIDTH)
-		{
-			handle_pixel(x, y, fractal);
-		}
-	}
-	mlx_put_image_to_window(fractal->mlx_connection, fractal->mlx_window, fractal->img.img_ptr, 0, 0);
+	mlx_put_image_to_window(fractal->mlx, fractal->window, fractal->image, 0,
+		0);
+	return (0);
 }

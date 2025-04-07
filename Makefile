@@ -20,12 +20,15 @@ SRC_DIR     = src
 OBJ_DIR     = obj
 
 # Source Files
-SRCS        = $(SRC_DIR)/main.c \
-              $(SRC_DIR)/render.c \
-              $(SRC_DIR)/math.c \
-			  $(SRC_DIR)/init.c \
-			  $(SRC_DIR)/events.c
-
+SRCS        =	$(SRC_DIR)/events.c \
+				$(SRC_DIR)/init.c \
+				$(SRC_DIR)/julia.c \
+				$(SRC_DIR)/main.c \
+				$(SRC_DIR)/mandelbrot.c \
+            	$(SRC_DIR)/render.c \
+            	$(SRC_DIR)/utils.c \
+			  
+			  
 # Object Files
 OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

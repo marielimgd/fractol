@@ -1,58 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   events.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmariano <mmariano@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/03 16:35:57 by mmariano          #+#    #+#             */
+/*   Updated: 2025/04/03 17:50:22 by mmariano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/fractol.h"
 
-int    close_handler(t_fractal *fractal)
+int	mouse_hook(int mouse_code, int x, int y, t_fractal *fractal)
 {
-    mlx_destroy_image(fractal->mlx_connection, fractal->img.img_ptr);
-    mlx_destroy_window(fractal->mlx_connection, fractal->mlx_window);
-    mlx_destroy_display(fractal->mlx_connection);
-    free(fractal->mlx_connection);
-    exit(EXIT_SUCCESS);
+	if (mouse_code == SCROLL_UP)
+		zoom(fractal, x, y, 1);
+	else if (mouse_code == SCROLL_DOWN)
+		zoom(fractal, x, y, -1);
+	draw_fractal(fractal, fractal->name);
+	return (0);
 }
 
-int key_handler(int keysym, t_fractal *fractal)
+int	key_hook(int key_code, t_fractal *fractal)
 {
-    if (keysym == XK_Escape)
-        close_handler(fractal);
-    else if (keysym == XK_Left)
-        fractal->shift_x += (0.5 * fractal->zoom);
-    else if (keysym == XK_Right)
-        fractal->shift_x -= (0.5 * fractal->zoom);
-    else if (keysym == XK_Up)
-        fractal->shift_y += 0.5;
-    else if (keysym == XK_Down)
-        fractal->shift_y -= 0.5;
-    else if (keysym == XK_plus || keysym == XK_equal)
-        fractal->iterations_def += 10;
-    else if (keysym == XK_minus)
-        fractal->iterations_def -= 10;
-    fractal_render(fractal); //refresh the image
-    return(0);
-}
-
-int mouse_handler(int button, int x, int y, t_fractal *fractal)
-{
-    (void)x;
-    (void)y;
-
-    if (button == Button5) //zoom in
-    {
-        fractal->zoom *= 0.95;
-    }
-    else if (button == Button4) //zoom out
-    {
-        fractal->zoom *= 1.05;
-    }
-    fractal_render(fractal); //refresh the image
-    return(0);
-}
-
-int julia_track(int x, int y, t_fractal *fractal)
-{
-    if (!ft_strncmp(fractal->name, "julia", 5))
-    {
-        fractal->julia_x = (map(x, -2, +2, 0, WIDTH) * fractal->zoom )+ fractal->shift_x;
-        fractal->julia_y = (map(y, +2, -2, 0, HEIGHT) * fractal->zoom )+ fractal->shift_y;
-    }
-    fractal_render(fractal);
-    return(0);
+	if (key_code == XK_Escape)
+		exit_fractal(fractal);
+	else if (key_code == XK_Left)
+		fractal->offset_x -= 42 / fractal->zoom;
+	else if (key_code == XK_Right)
+		fractal->offset_x += 42 / fractal->zoom;
+	else if (key_code == XK_Up)
+		fractal->offset_y -= 42 / fractal->zoom;
+	else if (key_code == XK_Down)
+		fractal->offset_y += 42 / fractal->zoom;
+	else if (key_code == XK_r)
+		init_fractal(fractal);
+	else if (key_code == XK_c)
+		fractal->color += (255 * 255 * 255) / 100;
+	else if (key_code == XK_j)
+		set_random_julia(&fractal->cx, &fractal->cy);
+	else if (key_code == XK_m || key_code == XK_p)
+		change_iterations(fractal, key_code);
+	draw_fractal(fractal, fractal->name);
+	return (0);
 }
