@@ -6,7 +6,7 @@
 /*   By: mmariano <mmariano@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 14:08:02 by mmariano          #+#    #+#             */
-/*   Updated: 2025/04/03 18:27:18 by mmariano         ###   ########.fr       */
+/*   Updated: 2025/04/07 11:57:30 by mmariano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		ft_putstr_fd("Usage: ./fractol <map_name>\n",
+		ft_putstr_fd("Usage: ./fractol <set_name>\n",
 			STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
