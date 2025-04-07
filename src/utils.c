@@ -6,7 +6,7 @@
 /*   By: mmariano <mmariano@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:26:08 by mmariano          #+#    #+#             */
-/*   Updated: 2025/04/03 17:54:58 by mmariano         ###   ########.fr       */
+/*   Updated: 2025/04/07 11:43:49 by mmariano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	exit_fractal(t_fractal *fractal)
 {
 	mlx_destroy_image(fractal->mlx, fractal->image);
 	mlx_destroy_window(fractal->mlx, fractal->window);
+	mlx_destroy_display(fractal->mlx);
 	free(fractal->mlx);
 	free(fractal);
 	exit(1);
