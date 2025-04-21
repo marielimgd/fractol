@@ -6,7 +6,7 @@
 /*   By: mmariano <mmariano@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:27:19 by mmariano          #+#    #+#             */
-/*   Updated: 2025/04/03 17:50:30 by mmariano         ###   ########.fr       */
+/*   Updated: 2025/04/03 18:40:01 by mmariano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	init_fractal(t_fractal *fractal)
 {
 	fractal->x = 0;
 	fractal->y = 0;
+	fractal->cx = 0;
+	fractal->cy = 0;
 	fractal->color = 0xFCBE11;
 	fractal->zoom = 300;
 	fractal->offset_x = -1.21;
